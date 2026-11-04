@@ -90,6 +90,34 @@ For plotting, modify `FILE_NAME` in `plot_imu_csv.py` before running.
 
 **Note:** Synthetic recordings are intended for training augmentation. Model evaluation should use independent real recordings.
 
+
+## Hardware Setup & Gesture Demonstration
+
+### Hardware Setup
+
+Two MPU6050 sensors are connected to an Arduino Mega 2560.
+
+**Front View**
+
+<img src="readme_images/hardware_front.jpg" width="450">
+
+**Back View**
+
+<img src="readme_images/hardware_back.jpg" width="450">
+
+### Gesture Demonstration
+
+The following images show five example hand gestures.
+
+| Idle | Forward | Backward |
+|---|---|---|
+| <img src="readme_images/idle.jpg" width="230"> | <img src="readme_images/forward.jpg" width="230"> | <img src="readme_images/backward.jpg" width="230"> |
+
+| Left | Right |
+|---|---|
+| <img src="readme_images/left.jpg" width="230"> | <img src="readme_images/right.jpg" width="230"> |
+
+
 ---
 
 ## 中文
@@ -155,3 +183,30 @@ python -m pip install numpy pandas matplotlib pyserial pyqtgraph PySide6
 
 
 **注意：** 合成数据用于辅助模型训练，模型测试应使用独立的真实采集数据。
+
+
+## 硬件连接与动作展示
+
+### 硬件连接
+
+两个 MPU6050 传感器连接至 Arduino Mega 2560。
+
+**正面**
+
+<img src="readme_images/hardware_front.jpg" width="450">
+
+**背面**
+
+<img src="readme_images/hardware_back.jpg" width="450">
+
+### 手势动作展示
+
+以下展示五种基本手势动作。
+
+| 静止 | 向前 | 向后 |
+|---|---|---|
+| <img src="readme_images/idle.jpg" width="230"> | <img src="readme_images/forward.jpg" width="230"> | <img src="readme_images/backward.jpg" width="230"> |
+
+| 向左 | 向右 |
+|---|---|
+| <img src="readme_images/left.jpg" width="230"> | <img src="readme_images/right.jpg" width="230"> |
