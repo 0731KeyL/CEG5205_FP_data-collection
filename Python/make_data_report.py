@@ -189,6 +189,10 @@ The current data package contains **{real_count} unique real trials**, with
 **{accepted} accepted**, **{review} review**, and **{rejected} rejected**.
 Only training receives augmentation; validation and test remain real-only.
 
+## Collection interface
+
+![Collection UI](collection_ui_demo.png)
+
 ## Split composition
 
 ![Split composition](split_composition.png)

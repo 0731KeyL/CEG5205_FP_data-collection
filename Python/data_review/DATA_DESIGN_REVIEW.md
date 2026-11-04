@@ -6,6 +6,10 @@ The current data package contains **74 unique real trials**, with
 **74 accepted**, **0 review**, and **0 rejected**.
 Only training receives augmentation; validation and test remain real-only.
 
+## Collection interface
+
+![Collection UI](collection_ui_demo.png)
+
 ## Split composition
 
 ![Split composition](split_composition.png)

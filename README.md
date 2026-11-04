@@ -86,6 +86,10 @@ CEG5205_FP_Materials/
 | `real_imu_analysis/` | Sampling analysis results and plots. |
 | `imu_figures/` | Generated IMU signal figures. |
 
+### Collection UI
+
+![IMU Collection Studio demo](Python/data_review/collection_ui_demo.png)
+
 ### 4. Installation and Usage
 
 Clone the repository:
@@ -241,6 +245,10 @@ Python 程序用于实时数据采集、手势标注、数据分析、数据增�
 | `augmented_imu_data/` | 真实数据副本及生成的合成数据。 |
 | `real_imu_analysis/` | 采样质量分析结果和图片。 |
 | `imu_figures/` | 生成的 IMU 信号曲线图。 |
+
+### 采集界面
+
+![IMU 数据采集工作台 Demo](Python/data_review/collection_ui_demo.png)
 
 ### 3. 环境安装与运行
 
