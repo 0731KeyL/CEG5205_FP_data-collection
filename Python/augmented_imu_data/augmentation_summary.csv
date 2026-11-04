@@ -1,0 +1,9 @@
+gesture,real_count,synthetic_count,total_count
+idle,10,90,100
+forward,10,90,100
+backward,10,90,100
+left,10,90,100
+right,10,90,100
+grasp,2,98,100
+release,2,98,100
+other,20,80,100
