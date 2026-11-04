@@ -18,7 +18,11 @@ EXPECTED_INTERVAL_MS = 1000 / EXPECTED_RATE
 
 # Find recorded CSV files
 
-csv_files = sorted(DATA_DIR.glob("*.csv"))
+csv_files = sorted(
+    path
+    for path in DATA_DIR.rglob("*.csv")
+    if "_sessions" not in path.parts
+)
 
 if not csv_files:
     raise FileNotFoundError(

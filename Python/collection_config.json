@@ -1,0 +1,31 @@
+{
+  "gestures": [
+    "idle",
+    "forward",
+    "backward",
+    "left",
+    "right",
+    "grasp",
+    "release",
+    "other"
+  ],
+  "sensor_layout": {
+    "positions": "index|thumb",
+    "display": "食指 + 拇指",
+    "address_mapping": "0x68/0x69 to finger mapping unresolved"
+  },
+  "defaults": {
+    "duration_s": 1,
+    "trials": 10,
+    "countdown_s": 3,
+    "rest_s": 0
+  },
+  "serial": {
+    "baud_rate": 38400
+  },
+  "runtime": {
+    "window_samples": 20,
+    "inference_stride_samples": 1,
+    "target_end_to_end_latency_ms": 200
+  }
+}

@@ -1,4 +1,5 @@
 
+import argparse
 from pathlib import Path
 
 import numpy as np
@@ -207,7 +208,19 @@ def plot_imu_csv(filename, show=True):
 
 
 if __name__ == "__main__":
-
-    FILE_NAME = "grasp_synthetic_015.csv"
-
-    plot_imu_csv(FILE_NAME)
+    parser = argparse.ArgumentParser(
+        description="Plot one 12-channel IMU CSV recording."
+    )
+    parser.add_argument(
+        "filename",
+        nargs="?",
+        default="grasp_synthetic_015.csv",
+        help="CSV filename or full path.",
+    )
+    parser.add_argument(
+        "--no-show",
+        action="store_true",
+        help="Save the figure without opening an interactive window.",
+    )
+    args = parser.parse_args()
+    plot_imu_csv(args.filename, show=not args.no_show)

@@ -25,6 +25,7 @@ unsigned long timestamp_ms = 0;
 
 const unsigned long SAMPLE_INTERVAL_US = 20000;
 unsigned long nextSampleTime = 0;
+const unsigned long SERIAL_BAUD = 38400;
 
 #define LED_PIN 13
 
@@ -36,7 +37,7 @@ void setup() {
 
   Wire.begin();
 
-  Serial.begin(38400);
+  Serial.begin(SERIAL_BAUD);
 
   Serial.println("Initializing two MPU6050 sensors...");
 

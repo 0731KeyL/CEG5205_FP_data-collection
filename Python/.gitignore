@@ -3,3 +3,10 @@ __pycache__/
 .venv/
 venv/
 .vscode/
+processed_imu_data/
+real_imu_analysis/
+demo_imu_data/
+rejected_demo_imu_data/
+rejected_imu_data/
+dataset_v*/
+mlp_dataset_v*/
