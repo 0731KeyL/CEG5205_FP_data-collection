@@ -93,17 +93,26 @@ For plotting, modify `FILE_NAME` in `plot_imu_csv.py` before running.
 
 ## Hardware Setup & Gesture Demonstration
 
+
 ### Hardware Setup
 
 Two MPU6050 sensors are connected to an Arduino Mega 2560.
 
-**Front View**
+<table>
+  <tr>
+    <th align="center">Front View</th>
+    <th align="center">Back View</th>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="readme_images/hardware_front.jpg" width="250">
+    </td>
+    <td align="center">
+      <img src="readme_images/hardware_back.jpg" width="250">
+    </td>
+  </tr>
+</table>
 
-<img src="readme_images/hardware_front.jpg" width="450">
-
-**Back View**
-
-<img src="readme_images/hardware_back.jpg" width="450">
 
 ### Gesture Demonstration
 
@@ -187,17 +196,26 @@ python -m pip install numpy pandas matplotlib pyserial pyqtgraph PySide6
 
 ## 硬件连接与动作展示
 
+
 ### 硬件连接
 
 两个 MPU6050 传感器连接至 Arduino Mega 2560。
 
-**正面**
+<table>
+  <tr>
+    <th align="center">正面</th>
+    <th align="center">背面</th>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="readme_images/hardware_front.jpg" width="250">
+    </td>
+    <td align="center">
+      <img src="readme_images/hardware_back.jpg" width="250">
+    </td>
+  </tr>
+</table>
 
-<img src="readme_images/hardware_front.jpg" width="450">
-
-**背面**
-
-<img src="readme_images/hardware_back.jpg" width="450">
 
 ### 手势动作展示
 
