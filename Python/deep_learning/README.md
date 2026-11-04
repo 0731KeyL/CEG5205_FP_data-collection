@@ -20,6 +20,43 @@
 
 网络为 `Linear(84, 16) → ReLU → Linear(16, 8)`，共有 1,496 个可训练参数。预测取最大 logit 的索引。索引 0 至 7 依次对应 `idle, forward, backward, left, right, grasp, release, other`，见[标签映射](../dataset_v002/label_map.json)。
 
+## 环境配置
+
+已在 Windows 本机的 Conda 环境 `py312_pytorch214` 中运行训练、测试和模型导出。以下为本机已安装版本，供复现时核对。
+
+| 组件 | 版本或配置 |
+| --- | --- |
+| Python | 3.12.16 |
+| PyTorch | 2.14.1+cu126 |
+| PyTorch CUDA 运行时 | 12.6 |
+| NumPy | 2.5.4 |
+| scikit-learn | 1.9.1 |
+| GPU | NVIDIA GeForce RTX 4060 Laptop GPU，约 8 GB 显存 |
+| NVIDIA 驱动 | 566.24 |
+
+本目录直接依赖 PyTorch、NumPy 和 scikit-learn。scikit-learn 用于测试分类报告及混淆矩阵，导出脚本依赖 PyTorch。标准库模块随 Python 提供。当前环境已补齐项目依赖，可直接激活使用。
+
+```bat
+conda activate py312_pytorch214
+python -m pip check
+python -c "import sys, torch, numpy, sklearn; print(sys.executable); print(torch.__version__); print(numpy.__version__); print(sklearn.__version__); print('CUDA available:', torch.cuda.is_available())"
+```
+
+本机解释器路径为 `D:\Engineering_Software_nospace\Anaconda3\envs\py312_pytorch214\python.exe`。在 PyCharm 的项目 Python Interpreter 设置中选择这一解释器，然后运行本目录脚本。脚本通过自身位置定位默认数据集，工作目录可使用项目根目录或本目录。
+
+配置新环境时，先创建并激活 Python 3.12 环境，再安装适配目标机器的 PyTorch 构建，以及 NumPy 和 scikit-learn。下列命令提供基础安装方式，pip 会解析版本约束下的依赖。CUDA 可用性需用上面的检查命令确认，训练脚本也支持通过 `--device cpu` 运行。
+
+```bat
+conda create -n ceg5205_mlp python=3.12
+conda activate ceg5205_mlp
+python -m pip install torch numpy scikit-learn
+python -m pip check
+```
+
+上面的基础安装命令未锁定完整依赖，可能与记录的实验环境版本不同。若需要复现本机完整环境，可在源电脑激活 `py312_pytorch214` 后执行 `conda env export --no-builds > environment.yml`，在目标电脑使用 `conda env create -f environment.yml`。迁移前应删除导出文件中的本机 `prefix` 行，并核对 pip 源是否提供对应的 PyTorch CUDA 构建。
+
+整个项目的采集、分析和可视化还使用 pandas 3.1.0、matplotlib 3.11.2、pyserial 3.5、pyqtgraph 0.14.0 和 PyQt5 5.15.11。它们已安装在当前本机环境中，项目依赖清单见 [requirements.txt](../requirements.txt)。该清单未包含 PyTorch，且未锁定版本。配置已有环境时，应先检查已安装包，再补齐缺失依赖，保留经过验证的现有版本。
+
 ## 训练与测试
 
 在本机 Anaconda Prompt 中激活环境，进入本目录后执行：
