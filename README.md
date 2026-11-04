@@ -26,6 +26,7 @@ CEG5205_FP_Materials/
 │   ├── analyze_real_imu.py
 │   ├── augment_imu_dataset.py
 │   ├── imu_augmentations.py
+│   ├── augmentation_config.json
 │   ├── imu_processing.py
 │   ├── build_dataset.py
 │   ├── load_dataset.py
@@ -37,6 +38,7 @@ CEG5205_FP_Materials/
 │   ├── COLLABORATION.md
 │   ├── DATASET_CONTRACT.md
 │   ├── PIPELINE_ARCHIVE.md
+│   ├── DATA_SYSTEM_OVERVIEW.md
 │   ├── REALTIME_CONTRACT.md
 │   ├── data_review/
 │   │   └── DATA_DESIGN_REVIEW.md
@@ -61,7 +63,8 @@ CEG5205_FP_Materials/
 | `imu_real_batch_recorder.py` | Real-time visualization, gesture labeling, and batch CSV recording. |
 | `analyze_real_imu.py` | Analyzes sampling rate, jitter, and missing frames. |
 | `augment_imu_dataset.py` | Legacy fixed-count synthetic-file generator. Do not use its copies across evaluation splits. |
-| `imu_augmentations.py` | Label-preserving crop, shift, packet-loss, and sensor-outage augmentations with masks. |
+| `imu_augmentations.py` | Configurable NumPy augmentation registry for timing, communication loss, and physical sensor variation. |
+| `augmentation_config.json` | Enables, orders, and parameterizes augmentation operations. |
 | `imu_processing.py` | Timestamp resampling, event-aware windows, optional summary features, duplicate checks, and split helpers. |
 | `build_dataset.py` | Builds versioned split files for any downstream model, with metainfo, normalization, masks, and checksums. |
 | `load_dataset.py` | Verifies checksums and loads a frozen train/validation/test split. |
@@ -73,6 +76,7 @@ CEG5205_FP_Materials/
 | `COLLABORATION.md` | Data/model workflow, versioning, and branch collaboration rules. |
 | `DATASET_CONTRACT.md` | Defines the downstream tensor, label, and normalization contract. |
 | `PIPELINE_ARCHIVE.md` | Visual archive of acquisition, quality, preprocessing, splitting, augmentation, and delivery. |
+| `DATA_SYSTEM_OVERVIEW.md` | Concise task-oriented overview of the complete data system and evidence. |
 | `REALTIME_CONTRACT.md` | Separates offline training data from causal, low-latency online inference. |
 | `prepare_imu_dataset.py` | Converts real CSVs to SI units, fixed windows, masks, source indices, and manifests. |
 | `train_imu_baseline.py` | Evaluates a real-data-only scikit-learn baseline with per-recording predictions. |
@@ -108,7 +112,7 @@ Run the Python programs:
 | Analyze recordings | `python analyze_real_imu.py` |
 | Generate synthetic data | `python augment_imu_dataset.py` |
 | Prepare model-ready dataset | `python prepare_imu_dataset.py` |
-| Build split dataset | `python build_dataset.py --output dataset_v001` |
+| Build next split dataset | `python build_dataset.py --output dataset_v003` |
 | Verify/load frozen split | `python load_dataset.py --split train` |
 | Generate data design review | `python make_data_report.py` |
 | Train real-data baseline | `python train_imu_baseline.py` |
@@ -215,7 +219,8 @@ Python 程序用于实时数据采集、手势标注、数据分析、数据增�
 | `imu_real_batch_recorder.py` | 实时绘图、动作标注、批量采集并保存 CSV。 |
 | `analyze_real_imu.py` | 分析采样频率、采样抖动和丢帧情况。 |
 | `augment_imu_dataset.py` | 旧版固定数量合成文件生成器；其副本不能跨训练/测试划分使用。 |
-| `imu_augmentations.py` | 标签保持的裁剪、平移、丢包和单传感器中断增强，并返回可见性 mask。 |
+| `imu_augmentations.py` | 可配置的 NumPy 增强 registry，覆盖时间、通信损坏和传感器物理扰动。 |
+| `augmentation_config.json` | 配置各增强的启用概率、顺序和强度。 |
 | `imu_processing.py` | 时间轴重采样、事件感知窗口、可选统计特征、重复检测和 split 工具。 |
 | `build_dataset.py` | 生成适用于任意下游模型的 split、mask、normalization、metainfo 和 checksum。 |
 | `load_dataset.py` | 校验 checksum 并读取冻结的 train/validation/test 数据包。 |
@@ -227,6 +232,7 @@ Python 程序用于实时数据采集、手势标注、数据分析、数据增�
 | `COLLABORATION.md` | 数据组与模型组的职责、版本和分支协作约定。 |
 | `DATASET_CONTRACT.md` | 定义下游使用的张量、标签和归一化接口。 |
 | `PIPELINE_ARCHIVE.md` | 用流程图归档采集、质控、预处理、划分、增强和交付流程。 |
+| `DATA_SYSTEM_OVERVIEW.md` | 按 Task 1/3/4 和 Bonus 汇总系统能力、证据与边界。 |
 | `REALTIME_CONTRACT.md` | 区分离线训练流程与低延迟因果推理流程。 |
 | `prepare_imu_dataset.py` | 将真实 CSV 转为 SI 物理量、固定窗口、mask、source index 和可追溯清单。 |
 | `train_imu_baseline.py` | 仅使用真实数据训练并评估可复现的 scikit-learn 基线。 |
@@ -262,7 +268,7 @@ python -m pip install -r requirements.txt
 | 数据质量分析 | `python analyze_real_imu.py` |
 | 合成数据生成 | `python augment_imu_dataset.py` |
 | 生成训练数据 | `python prepare_imu_dataset.py` |
-| 构建分类数据集 | `python build_dataset.py --output dataset_v001` |
+| 构建下一版分类数据集 | `python build_dataset.py --output dataset_v003` |
 | 校验并读取数据包 | `python load_dataset.py --split train` |
 | 生成数据设计报告 | `python make_data_report.py` |
 | 真实数据基线 | `python train_imu_baseline.py` |

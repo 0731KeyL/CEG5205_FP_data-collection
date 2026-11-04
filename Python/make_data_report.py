@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt  # noqa: E402
 
 
 BASE_DIR = Path(__file__).resolve().parent
-DEFAULT_DATASET = BASE_DIR / "dataset_v001"
+DEFAULT_DATASET = BASE_DIR / "dataset_v002"
 DEFAULT_OUTPUT = BASE_DIR / "data_review"
 
 
@@ -250,7 +250,7 @@ visible mask. Validation and test never receive synthetic rows.
 
 1. Launch `imu_real_batch_recorder.py --demo`.
 2. Start one batch and show real-time signal and quality status.
-3. Run `build_dataset.py --output dataset_v002`.
+3. Run `build_dataset.py --output dataset_vNNN` for the next data release.
 4. Load a split with `load_dataset.py`.
 5. Compare the old and new model only after retraining on the new dataset version.
 

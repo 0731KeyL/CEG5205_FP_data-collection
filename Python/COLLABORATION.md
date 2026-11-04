@@ -22,7 +22,8 @@ Python code/
 └── split_registry.json
 
 Frozen artifacts/
-└── dataset_v001/
+├── dataset_v001/
+└── dataset_v002/
     ├── train.npz
     ├── validation.npz
     ├── test.npz

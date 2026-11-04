@@ -12,7 +12,10 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from imu_augmentations import augment_window
+from imu_augmentations import (
+    augment_window,
+    load_augmentation_config,
+)
 from imu_processing import (
     assign_splits,
     event_aware_window,
@@ -27,7 +30,7 @@ from project_config import load_project_config
 
 BASE_DIR = Path(__file__).resolve().parent
 DEFAULT_SOURCE = BASE_DIR / "real_imu_data"
-DEFAULT_OUTPUT = BASE_DIR / "dataset_v001"
+DEFAULT_OUTPUT = BASE_DIR / "dataset_v002"
 
 PROJECT_CONFIG = load_project_config()
 CLASS_NAMES = PROJECT_CONFIG["gestures"]
@@ -63,6 +66,11 @@ def parse_args():
     parser.add_argument("--window-length", type=int, default=50)
     parser.add_argument("--augment-copies", type=int, default=3)
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument(
+        "--augmentation-config",
+        type=Path,
+        default=BASE_DIR / "augmentation_config.json",
+    )
     parser.add_argument(
         "--split-registry",
         type=Path,
@@ -330,6 +338,7 @@ def main():
         f"{dataset_version}_"
         f"{datetime.now(timezone.utc):%Y%m%dT%H%M%SZ}"
     )
+    augmentation_config = load_augmentation_config(args.augmentation_config)
 
     records = []
     windows = []
@@ -497,6 +506,7 @@ def main():
                 window,
                 target_length=args.window_length,
                 seed=args.seed + index * 1009 + copy_index,
+                config=augmentation_config,
             )
             split_arrays[split]["x"].append(augmented)
             split_arrays[split]["mask"].append(augmented_mask)
@@ -619,6 +629,7 @@ def main():
         ),
         "augmentation_policy": "training-only",
         "augmentation_copies_per_train_recording": args.augment_copies,
+        "augmentation_config_sha256": file_sha256(args.augmentation_config),
         "normalization_source": "visible training values only",
         "quality_policy": {
             "grades": ["accepted", "review", "rejected"],
@@ -664,6 +675,10 @@ def main():
         json.dump(metainfo, file, ensure_ascii=False, indent=2)
     with (args.output / "feature_names.json").open("w", encoding="utf-8") as file:
         json.dump(features_name_list, file, ensure_ascii=False, indent=2)
+    (args.output / "augmentation_config.json").write_text(
+        json.dumps(augmentation_config, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
     with (args.output / "label_map.json").open("w", encoding="utf-8") as file:
         json.dump(
             {name: index for index, name in enumerate(CLASS_NAMES)},
@@ -684,8 +699,8 @@ This directory is the frozen data interface for a downstream classifier.
 Do not edit these files in place and do not regenerate augmentation inside a
 model-training repository.
 
-When new real recordings are added, create a new output directory such as
-`dataset_v002`; do not overwrite this version. Retrain and version the
+When new real recordings are added, create the next numbered output directory;
+do not overwrite this version. Retrain and version the
 downstream model for every dataset version.
 
 ## Canonical files

@@ -88,10 +88,10 @@ processed_imu_data/summary.json
 ## 正式分类数据集
 
 ```bash
-python build_dataset.py --output dataset_v001
+python build_dataset.py --output dataset_v002
 ```
 
-持续采集时使用递增版本，例如 `dataset_v002`；已有数据包不得原地覆盖。
+持续采集时使用递增版本，例如 `dataset_v003`；已有数据包不得原地覆盖。
 
 该流程会依次完成：
 
@@ -107,7 +107,7 @@ python build_dataset.py --output dataset_v001
 当前正式输出位于：
 
 ```text
-dataset_v001/
+dataset_v002/
 ├── train.npz / validation.npz / test.npz
 ├── X_train.npy / X_validation.npy / X_test.npy
 ├── y_train.npy / y_validation.npy / y_test.npy
@@ -158,13 +158,20 @@ test 中各有 1 条。该限制会在 metainfo 和报告中保留。
 `imu_augmentations.py` 实现：
 
 - 70%–100% 随机窗口裁剪后重采样到 50 点；
+- 单调时间弯曲；
 - 动作窗口在时间轴上随机平移，最多约 ±20%；
 - 1–5 个样本的随机连续丢帧；
 - 丢帧位置使用 sample-and-hold，并返回 visible mask；
+- 随机单通道短时掉线；
 - 随机选择一个 IMU 连续中断 10%–30% 的窗口；
+- 两个 IMU 之间 1–2 个采样点的时间错位；
+- 小幅度 SI 单位高斯噪声；
+- 轻微因果低通滤波差异；
 - 输出 `(sequence, visible_mask, augmentation_info)`。
 
 此外还实现了物理上较合理的旋转、每个 IMU 的加速度/角速度增益和 gyro bias 扰动。
+增强顺序、概率和强度由 `augmentation_config.json` 控制；新增强只需注册一个
+NumPy 函数并加入配置，不需要修改数据集构建主流程。
 
 当前没有声称这些增强能替代真实多人数据。
 

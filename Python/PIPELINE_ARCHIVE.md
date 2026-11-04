@@ -18,7 +18,7 @@ flowchart TD
     H --> I["读取 split_registry.json<br/>冻结已有 trial 的 split"]
     I --> J["train"]
     I --> K["validation / test<br/>仅真实数据"]
-    J --> L["训练集增强<br/>裁剪 / 平移 / 丢帧 / 中断 / 旋转 / 增益 / bias"]
+    J --> L["训练集增强<br/>时间弯曲/平移 / 丢帧/中断 / 噪声/低通 / 旋转/增益/bias"]
     L --> M["dataset bundle<br/>X / y / mask / length / features"]
     K --> M
     M --> N["normalization / metainfo / splits / checksums"]
@@ -108,7 +108,7 @@ release    2
 other     20
 ```
 
-`dataset_v001` 当前内容：
+`dataset_v002` 当前内容：
 
 ```text
 train：      45 真实 + 135 增强 = 180
@@ -125,7 +125,7 @@ test：       16 真实 + 0 增强  = 16
 ## 交付目录
 
 ```text
-dataset_v001/
+dataset_v002/
 ├── train.npz
 ├── validation.npz
 ├── test.npz

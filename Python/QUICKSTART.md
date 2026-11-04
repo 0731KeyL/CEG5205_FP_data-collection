@@ -73,13 +73,13 @@ real_imu_data/_sessions/<session_id>.csv
 ## 6. 构建下游数据集
 
 ```cmd
-python build_dataset.py --output dataset_v001
+python build_dataset.py --output dataset_v003
 ```
 
 新数据到达后使用下一个版本目录，例如：
 
 ```cmd
-python build_dataset.py --output dataset_v002
+python build_dataset.py --output dataset_v004
 ```
 
 不要覆盖模型组正在使用的旧版本；每个新数据集版本都需要重新训练并生成新的模型版本。
@@ -89,11 +89,11 @@ python build_dataset.py --output dataset_v002
 输出：
 
 ```text
-dataset_v001/train.npz
-dataset_v001/validation.npz
-dataset_v001/test.npz
-dataset_v001/normalization.npz
-dataset_v001/metainfo.json
+dataset_v002/train.npz
+dataset_v002/validation.npz
+dataset_v002/test.npz
+dataset_v002/normalization.npz
+dataset_v002/metainfo.json
 ```
 
 ## 7. 下游加载
@@ -101,7 +101,7 @@ dataset_v001/metainfo.json
 ```python
 from load_dataset import load_split
 
-train = load_split("dataset_v001", "train")
+train = load_split("dataset_v002", "train")
 X = train["features"]   # optional summary features: N × 84
 y = train["y"]          # labels: N
 ```

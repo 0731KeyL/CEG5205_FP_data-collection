@@ -1,7 +1,7 @@
 # Downstream Dataset Contract
 
 `build_dataset.py` produces a frozen dataset directory such as
-`dataset_v001/`. A downstream model must consume this directory and must
+`dataset_v002/`. A downstream model must consume this directory and must
 not re-read `real_imu_data/`, regenerate splits, or apply new augmentation.
 
 ## Required files
@@ -37,9 +37,9 @@ split NPZ and are also stored in the JSON metadata.
 ```python
 from load_dataset import load_split
 
-train = load_split("dataset_v001", "train")
-validation = load_split("dataset_v001", "validation")
-test = load_split("dataset_v001", "test")
+train = load_split("dataset_v002", "train")
+validation = load_split("dataset_v002", "validation")
+test = load_split("dataset_v002", "test")
 
 # Feature-based model
 X_train = train["features"]
@@ -76,7 +76,7 @@ entry. Never overwrite a dataset version that another group may already use.
 When new real recordings are available:
 
 1. keep the old dataset directory unchanged;
-2. rebuild into `dataset_v002`, `dataset_v003`, and so on;
+2. rebuild into `dataset_v003`, `dataset_v004`, and so on;
 3. train a new model version using the new `dataset_id`;
 4. record dataset checksum, model version, seed, and metrics in the model run
    metadata;

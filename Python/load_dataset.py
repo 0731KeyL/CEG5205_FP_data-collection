@@ -43,7 +43,7 @@ def main():
     parser.add_argument(
         "--dataset",
         type=Path,
-        default=Path(__file__).resolve().parent / "dataset_v001",
+        default=Path(__file__).resolve().parent / "dataset_v002",
     )
     parser.add_argument(
         "--split",
