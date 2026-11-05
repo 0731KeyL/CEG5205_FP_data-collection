@@ -37,7 +37,7 @@ def evaluate(model, data, criterion, device):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--dataset", type=Path, default=SCRIPT_DIR.parent / "dataset_v002")
+    parser.add_argument("--dataset", type=Path, default=SCRIPT_DIR.parent / "dataset_v004")
     parser.add_argument("--epochs", type=int, default=50)
     parser.add_argument("--batch-size", type=int, default=16)
     parser.add_argument("--lr", type=float, default=1e-3)
@@ -53,15 +53,16 @@ def main():
     train = load_split(args.dataset, "train")
     class_names = train["class_names"].tolist()
     features, labels = tensors(train)
-    counts = torch.bincount(labels, minlength=8)
-    if len(class_names) != 8 or len(counts) != 8 or (counts == 0).any():
-        raise ValueError("The training split must contain all eight gesture classes.")
-    weights = len(labels) / (8 * counts.float())
+    num_classes = len(class_names)
+    counts = torch.bincount(labels, minlength=num_classes)
+    if num_classes < 2 or len(counts) != num_classes or (counts == 0).any():
+        raise ValueError("The training split must contain all configured gesture classes.")
+    weights = len(labels) / (num_classes * counts.float())
     criterion = nn.CrossEntropyLoss(weight=weights.to(device))
     batches = DataLoader(TensorDataset(features, labels), batch_size=args.batch_size,
                          shuffle=True, generator=torch.Generator().manual_seed(args.seed))
     validation = tensors(load_split(args.dataset, "validation"))
-    model = GestureMLP(args.dataset / "normalization.npz").to(device)
+    model = GestureMLP(args.dataset / "normalization.npz", num_classes=num_classes).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
 
     best_loss = float("inf")
@@ -93,13 +94,13 @@ def main():
     test = tensors(load_split(args.dataset, "test"))
     test_loss, test_acc, predictions = evaluate(model, test, criterion, device)
     print(f"Test (epoch {best_epoch}): loss={test_loss:.4f}, accuracy={test_acc:.2%}")
-    print(classification_report(test[1], predictions, labels=list(range(8)),
+    print(classification_report(test[1], predictions, labels=list(range(num_classes)),
                                 target_names=class_names, digits=3, zero_division=0))
     print("Confusion matrix (rows=true, columns=predicted):")
-    print(confusion_matrix(test[1], predictions, labels=list(range(8))))
+    print(confusion_matrix(test[1], predictions, labels=list(range(num_classes))))
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
-    path = args.output_dir / datetime.now().strftime("gesture_mlp_%Y%m%d_%H%M%S_%f.pt")
+    path = args.output_dir / datetime.now().strftime("gesture_mlp_6class_%Y%m%d_%H%M%S_%f.pt")
     torch.save({"model_state_dict": model.cpu().state_dict(), "best_epoch": best_epoch,
                 "best_validation_loss": best_loss, "test_accuracy": test_acc,
                 "dataset_id": str(train["dataset_id"].item()), "class_names": class_names,
